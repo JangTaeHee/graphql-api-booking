@@ -134,6 +134,7 @@ query{
 ```
 URL : localhost:4000
 Method : POST
+Content-Type: application/json
 
 // 예약 목록 조회
 { 
