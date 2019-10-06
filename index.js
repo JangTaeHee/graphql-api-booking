@@ -36,7 +36,10 @@ const typeDefs = gql`
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    plugins: [responseCachePlugin()]
+    plugins: [responseCachePlugin()],
+    cacheControl: {
+        defaultMaxAge: 5,
+    }
 })
 
 server.listen().then(({ url }) => {
