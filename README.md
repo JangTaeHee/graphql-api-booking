@@ -41,5 +41,118 @@ GraphQL을 통해 다음과 같은 기능을 수행할 수 있도록 해주세�
 
  # 실행
  ```bash
+ $ npm i nodemon -g
+ $ npm i
  $ npm start
  ```
+
+ # 샘플 데이터 구조 (MySQL)
+```
+CREATE TABLE `user` (
+  `ID` varchar(20) NOT NULL COMMENT 'ID',
+  `NAME` varchar(50) NOT NULL COMMENT '이름',
+  `DEPARTMENT` varchar(20) NOT NULL COMMENT '소속',
+  PRIMARY KEY (`ID`)
+);
+
+CREATE TABLE `meeting_room` (
+  `ID` varchar(20) NOT NULL COMMENT 'ID',
+  `NAME` varchar(50) NOT NULL COMMENT '이름',
+  `SIZE` int(2) NOT NULL COMMENT '크기',
+  PRIMARY KEY (`ID`)
+);
+
+CREATE TABLE `reservation` (
+  `IDX` int(6) NOT NULL AUTO_INCREMENT COMMENT '순번',
+  `USER_ID` varchar(20) NOT NULL COMMENT '사용자 ID',
+  `ROOM_ID` varchar(20) NOT NULL COMMENT '회의실 ID',
+  `START_DTTM` datetime NOT NULL COMMENT '시작 일시',
+  `END_DTTM` datetime NOT NULL COMMENT '종료 일시',
+  PRIMARY KEY (`IDX`)
+);
+
+INSERT INTO `user` (ID, NAME, DEPARTMENT) VALUES ('jang', '장태희', '개발팀');
+INSERT INTO `user` (ID, NAME, DEPARTMENT) VALUES ('hong', '홍길동', '기획팀');
+INSERT INTO `user` (ID, NAME, DEPARTMENT) VALUES ('kim', '김혜영', '디자인팀');
+
+INSERT INTO `meeting_room` (ID, NAME, SIZE) VALUES ('guam', '괌', 4);
+INSERT INTO `meeting_room` (ID, NAME, SIZE) VALUES ('tahiti', '타히티', 6);
+INSERT INTO `meeting_room` (ID, NAME, SIZE) VALUES ('hawaii', '하와이', 8);
+```
+# API 예시 (graphql)
+```
+URL : localhost:4000
+Method : POST
+
+// 예약 목록 조회
+query{
+  reservation_list {
+    USER_NM,
+    DEPARTMENT,
+    ROOM_NM,
+    START_DTTM,
+    END_DTTM
+  }
+}
+
+// 예약 가능 회의실 조회
+query{
+  meeting_room_list(START_DTTM:"2019-10-07 13:00:00",END_DTTM:"2019-10-07 15:00:00") {
+    ID,
+    NAME,
+    SIZE
+  }
+}
+
+// 회의실 예약
+mutation{
+  addReservation(
+    USER_ID:"jang",
+    ROOM_ID:"hawaii",
+    START_DTTM:"2019-10-07 16:00:00",
+    END_DTTM:"2019-10-07 17:00:00"
+  )
+}
+
+// 예약 목록 및 예약 가능 회의실 조회
+query{
+  reservation_list {
+    USER_NM,
+    DEPARTMENT,
+    ROOM_NM,
+    START_DTTM,
+    END_DTTM
+  }
+  meeting_room_list(START_DTTM:"2019-10-07 13:00:00",END_DTTM:"2019-10-07 15:00:00") {
+    ID,
+    NAME,
+    SIZE
+  }
+}
+```
+# API 예시 (json)
+```
+URL : localhost:4000
+Method : POST
+
+// 예약 목록 조회
+{ 
+	"query": "{ reservation_list { USER_NM, DEPARTMENT, ROOM_NM, START_DTTM, END_DTTM } }"
+}
+
+// 예약 가능 회의실 조회
+{ 
+	"query": "{ meeting_room_list(START_DTTM:\"2019-10-07 13:00:00\",END_DTTM:\"2019-10-07 15:00:00\") { ID, NAME, SIZE } }" 
+}
+
+
+// 회의실 예약
+{ 
+	"query": "mutation{ addReservation(USER_ID:\"jang\", ROOM_ID:\"hawaii\", START_DTTM:\"2019-10-07 16:00:00\", END_DTTM:\"2019-10-07 17:00:00\") }" 
+}
+
+// 예약 목록 및 예약 가능 회의실 조회
+{ 
+	"query": "{ reservation_list { USER_NM, DEPARTMENT, ROOM_NM, START_DTTM, END_DTTM },  meeting_room_list(START_DTTM:\"2019-10-07 13:00:00\",END_DTTM:\"2019-10-07 15:00:00\") { ID, NAME, SIZE } }"
+}
+```
