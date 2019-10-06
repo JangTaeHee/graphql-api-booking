@@ -18,6 +18,7 @@ export const getReservation = async () => {
     LEFT JOIN MEETING_ROOM M
     ON R.ROOM_ID = M.ID
     WHERE YEARWEEK(R.START_DTTM) = YEARWEEK(NOW())
+    ORDER BY START_DTTM
     `
     const [rows] = await mysql.pool.query(query)
     return rows
@@ -38,6 +39,7 @@ export const getMeetingRoom = async (START_DTTM,END_DTTM) => {
   	    WHERE START_DTTM < '${END_DTTM}'
           AND END_DTTM > '${START_DTTM}'
     )
+    ORDER BY SIZE
     `
     const [rows] = await mysql.pool.query(query)
     return rows
@@ -60,6 +62,6 @@ export const addReservation = async (USER_ID, ROOM_ID, START_DTTM, END_DTTM) => 
     )
     `
     const [rows] = await mysql.pool.query(query)
-    if(rows.affectedRows > 0) return "예약 성공"
-    else return "예약 불가"
+    if(rows.affectedRows > 0) return "예약 성공."
+    else return "예약 불가, 이미 예약된 회의실입니다."
 }
