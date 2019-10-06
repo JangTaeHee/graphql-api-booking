@@ -5,7 +5,7 @@ import resolvers from "./graphql/resolvers"
 const typeDefs = gql`
     scalar Date
 
-    type Reservation{
+    type Reservation @cacheControl(maxAge: 240){
         IDX: Int!
         USER_ID: String!
         USER_NM: String!
@@ -16,7 +16,7 @@ const typeDefs = gql`
         END_DTTM: Date!
     }
 
-    type MeetingRoom{
+    type MeetingRoom @cacheControl(maxAge: 240){
         ID: String!
         NAME: String!
         SIZE: Int!
@@ -24,8 +24,8 @@ const typeDefs = gql`
 
 
     type Query{
-        reservation_list: [Reservation]!
-        meeting_room_list(START_DTTM:Date!,END_DTTM:Date!): [MeetingRoom]!
+        reservation_list: [Reservation]! @cacheControl(maxAge: 10)
+        meeting_room_list(START_DTTM:Date!,END_DTTM:Date!): [MeetingRoom]! @cacheControl(maxAge: 10)
     }
 
     type Mutation {
