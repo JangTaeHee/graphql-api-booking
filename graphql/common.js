@@ -1,23 +1,44 @@
 const mysql = require('../db/mysqlPool');
 
+// 사용자 목록 조회
+export const getUser = async (ID) => {
+    const query = `
+    SELECT
+        ID,
+        NAME,
+        DEPARTMENT
+    FROM USER
+    WHERE ID = '${ID}'
+    `
+    const [rows] = await mysql.pool.query(query)
+    return rows[0]
+}
+
+// 회의실 목록 조회
+export const getAllMeetingRoom = async (ID) => {
+    const query = `
+    SELECT
+        ID,
+        NAME,
+        SIZE
+    FROM MEETING_ROOM
+    WHERE ID = '${ID}'
+    `
+    const [rows] = await mysql.pool.query(query)
+    return rows[0]
+}
+
 // 회의실 예약 목록 조회
 export const getReservation = async () => {
     const query = `
     SELECT
-        R.IDX,
-        R.USER_ID,
-        U.NAME AS USER_NM,
-        U.DEPARTMENT,
-        R.ROOM_ID,
-        M.NAME AS ROOM_NM,
-        DATE_FORMAT(R.START_DTTM, '%Y-%m-%d %T') AS START_DTTM,
-        DATE_FORMAT(R.END_DTTM, '%Y-%m-%d %T') AS END_DTTM
-    FROM RESERVATION R
-    LEFT JOIN USER U
-    ON R.USER_ID = U.ID
-    LEFT JOIN MEETING_ROOM M
-    ON R.ROOM_ID = M.ID
-    WHERE YEARWEEK(R.START_DTTM) = YEARWEEK(NOW())
+        IDX,
+        USER_ID,
+        ROOM_ID,
+        DATE_FORMAT(START_DTTM, '%Y-%m-%d %T') AS START_DTTM,
+        DATE_FORMAT(END_DTTM, '%Y-%m-%d %T') AS END_DTTM
+    FROM RESERVATION
+    WHERE YEARWEEK(START_DTTM) = YEARWEEK(NOW())
     ORDER BY START_DTTM
     `
     const [rows] = await mysql.pool.query(query)

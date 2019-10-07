@@ -5,13 +5,24 @@ import resolvers from "./graphql/resolvers"
 const typeDefs = gql`
     scalar Date
 
+    type User @cacheControl(maxAge: 240){
+        ID: String!
+        NAME: String!
+        DEPARTMENT: String!
+    }
+
+    type Room @cacheControl(maxAge: 240){
+        ID: String!
+        NAME: String!
+        SIZE: Int!
+    }
+
     type Reservation @cacheControl(maxAge: 240){
         IDX: Int!
         USER_ID: String!
-        USER_NM: String!
-        DEPARTMENT: String!
+        User: User!
         ROOM_ID: String!
-        ROOM_NM: String!
+        ROOM: Room!
         START_DTTM: Date!
         END_DTTM: Date!
     }
@@ -21,7 +32,6 @@ const typeDefs = gql`
         NAME: String!
         SIZE: Int!
     }
-
 
     type Query{
         reservation_list: [Reservation]! @cacheControl(maxAge: 10)
