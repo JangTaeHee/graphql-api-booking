@@ -87,9 +87,13 @@ Method : POST
 // 예약 목록 조회
 query{
   reservation_list {
-    USER_NM,
-    DEPARTMENT,
-    ROOM_NM,
+    USER{
+    	NAME,
+      DEPARTMENT
+    },
+    ROOM{
+    	NAME
+    },
     START_DTTM,
     END_DTTM
   }
@@ -117,9 +121,13 @@ mutation{
 // 예약 목록 및 예약 가능 회의실 조회
 query{
   reservation_list {
-    USER_NM,
-    DEPARTMENT,
-    ROOM_NM,
+    USER{
+    	NAME,
+      DEPARTMENT
+    },
+    ROOM{
+    	NAME
+    },
     START_DTTM,
     END_DTTM
   }
@@ -138,7 +146,7 @@ Content-Type: application/json
 
 // 예약 목록 조회
 { 
-	"query": "{ reservation_list { USER_NM, DEPARTMENT, ROOM_NM, START_DTTM, END_DTTM } }"
+	"query": "{ reservation_list { USER { NAME, DEPARTMENT }, ROOM { NAME }, START_DTTM, END_DTTM } }"
 }
 
 // 예약 가능 회의실 조회
@@ -154,6 +162,6 @@ Content-Type: application/json
 
 // 예약 목록 및 예약 가능 회의실 조회
 { 
-	"query": "{ reservation_list { USER_NM, DEPARTMENT, ROOM_NM, START_DTTM, END_DTTM },  meeting_room_list(START_DTTM:\"2019-10-07 13:00:00\",END_DTTM:\"2019-10-07 15:00:00\") { ID, NAME, SIZE } }"
+	"query": "{ reservation_list { USER { NAME, DEPARTMENT }, ROOM { NAME }, START_DTTM, END_DTTM },  meeting_room_list(START_DTTM:\"2019-10-07 13:00:00\",END_DTTM:\"2019-10-07 15:00:00\") { ID, NAME, SIZE } }"
 }
 ```

@@ -20,7 +20,7 @@ const typeDefs = gql`
     type Reservation @cacheControl(maxAge: 240){
         IDX: Int!
         USER_ID: String!
-        User: User!
+        USER: User!
         ROOM_ID: String!
         ROOM: Room!
         START_DTTM: Date!

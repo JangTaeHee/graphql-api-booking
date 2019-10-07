@@ -8,7 +8,7 @@ const resolvers = {
     Reservation: {
         IDX: o => o.IDX,
         USER_ID: o => o.USER_ID,
-        User: o => getUser(o.USER_ID),
+        USER: o => getUser(o.USER_ID),
         ROOM_ID: o => o.ROOM_ID,
         ROOM: o => getAllMeetingRoom(o.ROOM_ID),
         START_DTTM: o => o.START_DTTM,
