@@ -15,7 +15,7 @@ export const getUser = async (ID) => {
 }
 
 // 회의실 목록 조회
-export const getAllMeetingRoom = async (ID) => {
+export const getMeetingRoom = async (ID) => {
     const query = `
     SELECT
         ID,
@@ -46,7 +46,7 @@ export const getReservation = async () => {
 }
 
 // 예약 가능 회의실 목록 조회
-export const getMeetingRoom = async (START_DTTM,END_DTTM) => {
+export const getAvailableMeetingRoom = async (START_DTTM,END_DTTM) => {
     const query = `
     SELECT
         ID,
